@@ -1,1 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abduvohid Majidov — Portfolio</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0c0e;
+      --surface: #13151a;
+      --border: #1f2229;
+      --accent: #c8f135;
+      --accent-dim: #9ab82a;
+      --text: #e8eaf0;
+      --muted: #6b7280;
+      --radius: 12px;
+    }
 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ─────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    /* ── NAVBAR ─────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(11,12,14,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HERO ───────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 40px 60px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.1s forwards;
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -2px;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.25s forwards;
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+      display: block;
+    }
+
+    .hero-bio {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.8;
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.4s forwards;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.55s forwards;
+    }
+
+    .btn-primary-custom {
+      background: var(--accent);
+      color: #0b0c0e;
+      border: none;
+      padding: 12px 28px;
+      border-radius: var(--radius);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary-custom:hover {
+      background: var(--accent-dim);
+      transform: translateY(-2px);
+      color: #0b0c0e;
+    }
+
+    .btn-outline-custom {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 12px 28px;
+      border-radius: var(--radius);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-outline-custom:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* ── SECTION BASE ───────────────────────────────────── */
+    section {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 80px 40px;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 48px;
+      line-height: 1.15;
+    }
+
+    /* ── ABOUT ──────────────────────────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .stat-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+    }
+
+    .stat-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      display: block;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* ── PROJECTS ───────────────────────────────────────── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: border-color 0.25s, transform 0.2s, box-shadow 0.25s;
+    }
+
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(200,241,53,0.07);
+      color: inherit;
+    }
+
+    .project-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(200,241,53,0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .project-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.3px;
+    }
+
+    .project-desc {
+      font-size: 0.83rem;
+      color: var(--muted);
+      flex: 1;
+      line-height: 1.6;
+    }
+
+    .project-lang {
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── COURSEWORK / AP CSA ────────────────────────────── */
+    .topics-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .topic-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      font-size: 0.83rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topic-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ── CONTACT / FOOTER ───────────────────────────────── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 60px 40px;
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .footer-left p {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .footer-left span {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-end;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--accent); }
+
+    .copyright {
+      text-align: center;
+      padding: 20px 40px 40px;
+      font-size: 0.72rem;
+      color: var(--border);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── DIVIDER ────────────────────────────────────────── */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ── ANIMATIONS ─────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 700px) {
+      nav { padding: 16px 20px; }
+      .nav-links { gap: 20px; }
+      .hero, section, footer { padding-left: 20px; padding-right: 20px; }
+      .about-grid { grid-template-columns: 1fr; }
+      .footer-links { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVBAR ─────────────────────────────────────────── -->
+  <nav>
+    <a class="nav-logo" href="#">[INITIALS]</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#coursework">Coursework</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── HERO ───────────────────────────────────────────── -->
+  <div class="hero">
+    <p class="hero-eyebrow">Developer · Student · Builder</p>
+    <h1>
+      Hi, I'm
+      <span>Abduvohid Majidov</span>
+    </h1>
+    <p class="hero-bio">
+      I'm a high school student passionate about computer science and building things. Currently studying AP CS A and working on projects that solve real problems.
+    </p>
+    <div class="hero-cta">
+      <a href="https://github.com/MLGodlike" class="btn-primary-custom" target="_blank">
+        ↗ View My GitHub
+      </a>
+      <a href="#projects" class="btn-outline-custom">
+        See My Projects
+      </a>
+    </div>
+  </div>
+
+  <hr class="section-divider" />
+
+  <!-- ── ABOUT ──────────────────────────────────────────── -->
+  <section id="about">
+    <p class="section-label">// about me</p>
+    <h2 class="section-title">A little background</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          I am from FDR high school. I was passionate about coding since my freshmen year when I first took a robotics class.
+        </p>
+        <p>
+          Outside of coding, I play varsity volleyball and enjoy playing MOBA games.
+        </p>
+        <div class="tag-list">
+          <!-- Add or remove tags that match your interests/skills -->
+          <span class="tag">Java</span>
+          <span class="tag">AP CS A</span>
+          <span class="tag">Python</span>
+          <span class="tag">Web Development</span>
+        </div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-card">
+          <span class="stat-number">10+</span>
+          <span class="stat-desc">Projects on GitHub</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">3</span>
+          <span class="stat-desc">AP classes taken</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">4+</span>
+          <span class="stat-desc">Years coding</span>
+        </div>
+        <!-- <div class="stat-card">
+          <span class="stat-number">[#]</span>
+          <span class="stat-desc">[Custom stat — e.g. "Games won" or "Books read"]</span>
+        </div> -->
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ── PROJECTS ───────────────────────────────────────── -->
+  <section id="projects">
+    <p class="section-label">// projects</p>
+    <h2 class="section-title">Things I've built</h2>
+    <div class="projects-grid">
+
+      <!-- Project 1: AP CSA FRQs (fill in your actual repo URL) -->
+      <a class="project-card" href="https://github.com/[YOUR-GITHUB-USERNAME]/ap-csa-2026-frqs" target="_blank">
+        <div class="project-icon">📝</div>
+        <div class="project-title">AP CS A — FRQ Practice</div>
+        <div class="project-desc">
+          Free-response question solutions and practice problems for the AP Computer Science A exam.
+        </div>
+        <div class="project-lang">Java</div>
+      </a>
+
+      <!-- Project 2: Add your own 
+      <a class="project-card" href="https://github.com/[YOUR-GITHUB-USERNAME]/[REPO-NAME]" target="_blank">
+        <div class="project-icon">🛠️</div>
+        <div class="project-title">[Project Title]</div>
+        <div class="project-desc">
+          [One or two sentences describing what this project does and why you built it.]
+        </div>
+        <div class="project-lang">[Language / Tech]</div>
+      </a>
+
+      <!-- Project 3: Add your own or remove this card 
+      <a class="project-card" href="https://github.com/[YOUR-GITHUB-USERNAME]/[REPO-NAME]" target="_blank">
+        <div class="project-icon">💡</div>
+        <div class="project-title">[Project Title]</div>
+        <div class="project-desc">
+          [One or two sentences describing what this project does and why you built it.]
+        </div>
+        <div class="project-lang">[Language / Tech]</div>
+      </a>-->
+      
+      <!-- This Portfolio (always a good card to include) -->
+      <a class="project-card" href="https://github.com/[YOUR-GITHUB-USERNAME]/[YOUR-GITHUB-USERNAME]" target="_blank">
+        <div class="project-icon">🌐</div>
+        <div class="project-title">This Portfolio</div>
+        <div class="project-desc">
+          My personal portfolio site, built with Bootstrap 5 and hosted on GitHub Pages.
+        </div>
+        <div class="project-lang">HTML · CSS</div>
+      </a>
+
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ── AP CSA COURSEWORK ───────────────────────────────── -->
+  <section id="coursework">
+    <p class="section-label">// ap cs a</p>
+    <h2 class="section-title">What I'm learning</h2>
+    <div class="topics-list">
+      <!-- Remove or add topics to match where you actually are in the course -->
+      <div class="topic-item"><span class="topic-dot"></span>Primitive Types</div>
+      <div class="topic-item"><span class="topic-dot"></span>Classes & Objects</div>
+      <div class="topic-item"><span class="topic-dot"></span>Boolean Expressions</div>
+      <div class="topic-item"><span class="topic-dot"></span>Iteration & Loops</div>
+      <div class="topic-item"><span class="topic-dot"></span>Writing Classes</div>
+      <div class="topic-item"><span class="topic-dot"></span>Arrays & ArrayLists</div>
+      <div class="topic-item"><span class="topic-dot"></span>2D Arrays</div>
+      <div class="topic-item"><span class="topic-dot"></span>Inheritance</div>
+      <div class="topic-item"><span class="topic-dot"></span>Recursion</div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ── FOOTER / CONTACT ───────────────────────────────── -->
+  <footer id="contact">
+    <div class="footer-left">
+      <p>Let's connect.</p>
+      <span>Open to opportunities, collaborations, and conversations.</span>
+    </div>
+    <div class="footer-links">
+      <!-- Replace # with real links. Remove any you don't use. -->
+      <a href="http://github.com/MLGodlike" target="_blank">GitHub ↗</a>
+      <a href="mailto:abduvohidmajidov00@gmail.com">Email ↗</a>
+      <!-- Optional: add LinkedIn, etc. -->
+      <!-- <a href="https://linkedin.com/in/[YOUR-PROFILE]" target="_blank">LinkedIn ↗</a> -->
+    </div>
+  </footer>
+
+  <p class="copyright">© 2026 Abduvohid Majidov. Built with Bootstrap 5 + GitHub Pages.</p>
+
+</body>
+</html>
